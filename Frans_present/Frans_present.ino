@@ -13,6 +13,10 @@ int but3; //button 3      "speed"
 int spd = 500; // the speed of the lights switching 
 String dispWord[16]; // creates an array for the display word 
 int speeds[10] = {100,200,300,400,500,600,700,800,900,900}; // have to use this since the pots readings are skewed 
+int check; 
+int row;
+int col;
+
 
 
 
@@ -53,29 +57,38 @@ void loop()
   
   if(but2 == 0)
   {
-    delay(500);
-    title();
+    delay(5);
+    if(but2 ==0)
+    {
+      //delay(500);
+      title();
   }
+}
  
   if ( but1 == 0) 
   {  
-    wordClear();
-    delay(500);
-    lcd.clear();
-    lcd.home();
-    // enter write mode 
-    while(but2 == 1)//while back is not pressed 
+    delay(5);
+    if( but1 ==0)
     {
-      but1 = digitalRead(12);
-      but2 = digitalRead(13);
-      potval = analogRead(A0);
-      potval = potval*28/1023.0;
-      Serial.print(but1);
-      delay(1);
-      lcd.setCursor(xpos,0);
-      dispWord[wordpos] = getChar(potval);
-      lcd.print(getChar(potval));
-       if(but1 == 0)
+      
+    
+      wordClear();
+      delay(500);
+      lcd.clear();
+      lcd.home();
+      // enter write mode 
+      while(but2 == 1)//while back is not pressed 
+      {
+        but1 = digitalRead(12);
+        but2 = digitalRead(13);
+        potval = analogRead(A0);
+        potval = potval*28/1023.0;
+        Serial.print(but1);
+        delay(1);
+        lcd.setCursor(xpos,0);
+        dispWord[wordpos] = getChar(potval);
+        lcd.print(getChar(potval));
+        if(but1 == 0)
       {
         delay(500);
         xpos+=1;
@@ -83,16 +96,15 @@ void loop()
       }
     }
   }
+ }
   
-  delay(500);
+  delay(100);
+  // use toCharArray
   for(int i = 0; i < 16; i++)
     {
       Serial.print(dispWord[i]);
     }
-  digitalWrite(2,HIGH);
-  delay(spd);
-  digitalWrite(2,LOW);
-  delay(spd);
+printChar('Z');
 }
 
 //_______________________________________ FUNCTIONS ________________________________________
@@ -109,7 +121,7 @@ void title()
 }
 String getChar(int input)
 {
-  String alphabet[28] ={"!","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Z"};
+  String alphabet[28] ={"_","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Z"};
   return alphabet[input -1];
 }
 void wordClear()
@@ -120,6 +132,29 @@ void wordClear()
     }
 }
 
+
+
+void printChar(char letter) // this function takes in a letter and flashes the led
+{
+  // the mutiplex used is a 5x5  = 25 leds ( a - y ) + a single LED for the letter z 
+  // if the char is Z , Print right away 
+  if ( letter == "Z") 
+  {
+    digitalWrite(2,1);
+    delay(spd);
+    digitalWrite(2,0);
+    delay(spd);
+  }
+  else
+  {
+     letter = letter - 65; // converts it from 65 to 0 ( the first char is 0 = A 
+     row = letter / 5; // gets the row
+     col = letter % 5;// gets the col
+
+//     digitalWrite( row 
+  }
+  
+}
 /*
    if(but3==0)
   {
