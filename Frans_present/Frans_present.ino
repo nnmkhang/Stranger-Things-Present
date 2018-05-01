@@ -23,6 +23,8 @@ String current;
 int xpos;
 int wordpos;
 int xypos;
+String merry = "MERRYCHRISTMAS";
+boolean titlePage = true;
   
 
 
@@ -63,7 +65,7 @@ void loop()
   
   potval = analogRead(A0);
   spd = potval;
-  
+
   if(but2 == 0)
   {
     delay(5);
@@ -71,6 +73,7 @@ void loop()
     {
       delay(500);
       title();
+      titlePage = true; 
     }
   }
  
@@ -79,9 +82,9 @@ void loop()
     delay(5);
     if( but1 ==0)
     {
-      
+      titlePage = false;
       ledReset();
-      //wordClear();
+      wordClear();
       delay(500);
       lcd.clear();
       lcd.home();
@@ -111,7 +114,8 @@ void loop()
     lcd.print(".");
   }
  }
-  
+  if(titlePage == false)
+  {
   delay(300);
   char  ledWord[wordpos+1];
   //Serial.print(dispWord);
@@ -122,11 +126,12 @@ void loop()
    //Serial.println(ledWord[i]);
    printChar(ledWord[i]);    
   }
+  }
 
 }
 
 //_______________________________________ FUNCTIONS ________________________________________
-void title()
+void title() // goes back to to the title screen
 {
   lcd.clear();
   //This is the begning screen 
@@ -136,14 +141,16 @@ void title()
   lcd.setCursor(0,1);
   lcd.print("Fran! KN-2017"); 
   spd = 500; // reset to begining speed 
-  // print out merry christmas 
+  ledReset(); // clears the LED's
+  
+
 }
-String getChar(int input)
+String getChar(int input) // returns a string based on the Pot value 
 {
   String alphabet[28] ={"_","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Z"};
   return alphabet[input -1];
 }
-void wordClear()
+void wordClear() // clears the word
 {
     dispWord = "";
 }
@@ -156,23 +163,22 @@ void printChar(char letter) // this function takes in a letter and flashes the l
   // if the char is Z , Print right away 
   if ( letter == 'Z') 
   {
-    for(int i=0; i<=4; i++)
-    {
-    digitalWrite(i,1);
-    digitalWrite(i+5,0);
+    digitalWrite(10,1);
     delay(spd);
-    digitalWrite(i,0);
-    digitalWrite(i+5,1);
-    delay(spd);
-    }
+    digitalWrite(10,0);
   }
   else
   {
-     xypos = letter - 65; // converts it from 65 to 0 ( the first char is 0 = A 
-     row = xypos / 5;     // gets the row
-     col = (xypos % 5) +5;     // gets the col
-     
-    Serial.println(xypos);
+     xypos = letter - 65; // converts it from 65 to 0 ( the first char is 0 = A )
+     row = (xypos / 5 )+5;     // gets the row
+     col = (xypos % 5);     // gets the col
+     Serial.print("xypos: ");
+     Serial.println(xypos);
+     Serial.print("row ");
+     Serial.println(row);
+     Serial.print("col ");
+     Serial.println(col);
+    ledReset();
     digitalWrite(row, 0);
     digitalWrite(col,1);
     delay(spd);
@@ -183,34 +189,13 @@ void printChar(char letter) // this function takes in a letter and flashes the l
   }
   
 }
-/*
-   if(but3==0)
-  {
-    lcd.clear();
-    lcd.home();
-    lcd.print("Delay in mili-");
-    lcd.setCursor(0,1);
-    lcd.print("seconds: ");
-    lcd.setCursor(9,1);
-    while(but2==1)
-    {
-      but2 = digitalRead(12);
-      potval = analogRead(A0);
-      potval = potval*10/1023.0;
-      lcd.print(speeds[potval]); 
-      lcd.setCursor(9,1);
-      delay(1);
-      spd = speeds[potval];
-    }
-  }
- */
 
 void ledReset() // Resets all rows/cols of the LED'S
 {
   for(int i = 0; i<=4; i++)
   {
-    digitalWrite(i,0);// off will be 0 
-    digitalWrite((i+5),1); // off will be 1 
+    digitalWrite(i,0);// off will be 0 for the cols 
+    digitalWrite((i+5),1); // off will be 1  for the rows 
   }
 }
 
