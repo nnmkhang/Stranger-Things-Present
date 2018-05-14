@@ -17,8 +17,8 @@ int check;
 int row;
 int col;
 // pins 0 and 1 cannot be used as inputs since they are used for serial input
-int rows[5] = {5, 6, 7, 8, 9}; // all rows will be set to 1 except, but the one we want to turn on will be 0
 int cols[5] = {0, 1, 2, 3, 4}; // all cols will be 0 except for the one we want to turn on which will be 1
+int rows[5] = {9, 8, 7, 6, 5};
 String current;
 int xpos;
 int wordpos;
