@@ -17,8 +17,8 @@ int check;
 int row;
 int col;
 // pins 0 and 1 cannot be used as inputs since they are used for serial input
-int cols[5] = {0, 1, 2, 3, 4}; // all cols will be 0 except for the one we want to turn on which will be 1
-int rows[5] = {9, 8, 7, 6, 5};
+int cols[5] = {4, 3, 2, 1, 0}; // all cols will be 0 except for the one we want to turn on which will be 1
+int rows[5] = {5, 6, 7, 8, 9};
 String current;
 int xpos;
 int wordpos;
@@ -97,6 +97,7 @@ void loop()
       Serial.println("flag");
       Serial.println(but2);
 
+
       while (but2 == 1) //while back is not pressed
       {
         but1 = digitalRead(12);
@@ -116,8 +117,10 @@ void loop()
           wordpos += 1;
         }
       }
+      digitalWrite(10,1);
       lcd.setCursor(xpos, 0);
       lcd.print(".");
+ 
     }
   }
   if (titlePage == false)
