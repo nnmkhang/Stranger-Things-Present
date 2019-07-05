@@ -1,3 +1,2 @@
 # Stranger-Things-Present
-Modifiable light wall from stranger things 
-Made using an arduino nano and a potentiometer and buttons as a keyboard and a LCD as a screen and Mutliplexed 26 LED's to represent charaters in the alphabet 
+This is a simple Word Wall inspired from a Stranger Things scene. It is made with an Arduino Nano by mutliplexing multiple LEDs. This project was a very fast and simple one I did for fun. You can also view my build log on [imgur](https://imgur.com/a/Hju4o09).
